@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="no-js"> 
+<head>
+<meta charset="utf-8">
+<title>Ville peer review </title>
+
+<!-- Mobile viewport -->
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<link rel="shortcut icon" href="images/favicon.ico"  type="image/x-icon" />
+
+<!-- CSS-->
+<link rel="stylesheet" href="css/basic-style.css">
+<!-- end CSS-->
+<!-- jQuery -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>    
+<!-- JS-->
+<script src="js/libs/modernizr-2.6.2.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="js/preview.js"></script> 
+	
+	<script>
+     function saveQuestions() {
+         // Loop through the questions and build JSONs.
+         var questions = [];
+        var questionElements = $('section.yesNoQuestion, section.3starRating, section.multipleChoiceQuestion, section.5starRating, section.rangeQuestion, section.commentbox');
+
+         for (var i = 0; i < questionElements.length; ++i) {
+             var current = questionElements.eq(i);
+             var item = {
+                 type: current.attr('class'),
+                 question: current.find('[data-question]').eq(0).html()
+             }
+             questions.push(item);
+         }
+         localStorage.setItem('questions', JSON.stringify(questions));
+     }
+
+    
+     /*for preview page*/
+     $(document).ready(function () {
+         $('#previewr').click(function () {
+             saveQuestions();        
+
+             var w = window.open('', 'win', 'width=1000,height=1000');
+             var html = '<html><head>'
+              + '<link rel="stylesheet" href="css/basic-style.css" />'
+              + '<script src="http:\/\/code.jquery.com\/jquery-1.7.1.min.js"><\/script>'
+
+             //+ '<script>$(document).ready(funtion(e) {$("#main").append("hello.");})<\/script>'
+              + '</head><body data-editable="false">'
+             //+ $('#wrapper').html()
+             +'<div class="wide-content"><header class="wrapper clearfix"><div id="banner"><div id="logo"><a href="ville.html"><img src="images/basic-logo.png" alt="logo"></a></div></div></header><section id="hero" class="clearfix"><div class="wrapper"><h1>Peer Review</h1><p>Give your evalution accroding to the scale of 1-5 star.The peer review has been splited into few different sections.Star 1 shows the least points and star 5 is the greatest. Please check all the section before clicking the <strong>Submit</strong> button. </p></div></section></div>'
+              + '<div id="main" class="wrapper"></div>'
+              +'<button id="send-preview" style="margin-left:200px;" class="buttonlink" type="submit" value="send">Submit</button>'
+              +'<footer class="footer"><div id="colophon" class="wrapper clearfix"><a href="http://ville.cs.utu.fi/" target="_blank" title="Learn more about ville" style="color:#777;">VILLE</a></div><div id="attribution" class="wrapper clearfix" style="color:#666; font-size:11px;">Collaborative Educational Tool </div><!--end attribution--></footer>'
+
+              + '<script src="js/preview.js"><\/script>'
+              + '</body></html>';
+             w.document.open();
+             w.document.write(html);
+             w.document.close();
+
+             return false;
+         });
+         /*3 star rating*/
+         $('#three-star').click(function () {
+             insert3star($('#main'), undefined, true);
+         });
+         /*5 star rating*/
+         $('#five-star').click(function () {
+             insert5star($('#main'), undefined, true);
+         });
+
+         /*multiple choice*/
+         $('#check-type').click(function () {
+             insertMultipleChoice($('#main'), undefined, true);
+         });         
+
+         $('#slide').click(function (e) { insertSlider($('#main'),undefined, true); }); 
+
+         $('body').on('click', '#del-range', function () {
+             $(this).parent().remove();
+         });
+
+         /*editing questions*/
+         $('body').on('dblclick', 'p', function () {
+             $(this).attr('contentEditable', true);
+         });
+
+         /*yes No question*/
+         $('#radio-button').click(function () {
+
+             insertYesNo($('#main'), undefined, true /*maybe use a variable here that tells if the questions can be edited or not.*/);
+         });
+
+         /*comment box*/
+         $('#comment-box').click(function(){
+
+          insertcommentbox($('#main'), undefined, true);
+         });
+
+
+           });   
+
+	</script>	
+<!-- end JS-->
+
+
+
+<style type="text/css">
+</style>
+</head>
+
+<body data-editable="true">
+<div id="wrapper">  
+<!-- header area -->
+    <header class="wrapper clearfix">
+		       
+        <div id="banner">        
+        	<div id="logo"><a href="ville.html"><img src="images/basic-logo.png" alt="logo"></a></div> 
+        </div>
+        
+    </header><!-- end header -->
+ 
+ 
+<!-- header-->
+
+    <section id="hero" class="clearfix">    
+    
+		<div class="wrapper">
+			<h1>Peer Review</h1>
+						  <p> Give your evalution accroding to the scale of 1-5 star. The peer review has been splited into few different sections.
+							  Star 1 shows the least points and star 5 is the greatest. Please check all the section before clicking the
+							   <strong>Submit</strong> button. 
+						  </p>
+    </div>
+
+		
+    </section><!--end header-->
+		
+      <section style="text-align:center;" id="content" class="wide-content">
+          <button id="three-star" class="fb-button" >&#9734 rating 3</button>
+          <button id="five-star" class="fb-button" >&#9734 rating 5</button>
+          <button id="check-type" class="fb-button" value="Multiple choice">Multiple choice</button>
+          <button id="radio-button" class="fb-button" >Yes No</button>
+          <button id="slide" class="fb-button" >Range</button>
+          <button id="comment-box" class="fb-button" >Comment</button> 
+          <button id="file-upload" class="fb-button" >File upload</button>              
+      </section>
+
+
+
+<!-- main content area --> 
+<div id="main" class="wrapper">
+
+</div><!-- #end div #main .wrapper -->
+
+    <div class="grid_4">
+    
+    <button style="margin-left:200px;" id="previewr" class="fb-button" class="wide-content">preview</button> 
+        </div>
+	  	</form>
+<!-- footer area -->    
+	<footer class="footer">
+		<div id="colophon" class="wrapper clearfix">
+			<a href="http://ville.cs.utu.fi/" target="_blank" title="Learn more about ville" style="color:#777;">VILLE</a>
+		</div>	
+	<div id="attribution" class="wrapper clearfix" style="color:#666; font-size:11px;">Collaborative Educational Tool </div><!--end attribution-->
+		
+	</footer><!-- #end footer area --> 
+</div>
+</body>
+</html>
