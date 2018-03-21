@@ -1,5 +1,5 @@
 /*
-    Ville team implements the final version of this function.
+    Backend team implements the final version of this function.
     
     @return array of json elements with attributes:
         type            Type of the question
