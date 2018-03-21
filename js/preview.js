@@ -23,7 +23,7 @@ getQuestions = function () {
 }
 
 /*
-    Ville team implements the final version of this function.
+    Backend team implements the final version of this function.
 */
 sendSubmission = function (questionAnswers) {
     localStorage.put('questionAnswers', JSON.stringify(questionAnswers));
